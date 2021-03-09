@@ -40,7 +40,7 @@
         </v-toolbar-items>
       </v-toolbar>
       <div class="pl-4 pr-4 pt-5 pb-5">
-        <!-- <v-form
+        <v-form
           ref="form"
           v-model="valid"
           lazy-validation
@@ -94,7 +94,7 @@
           >
             Save
           </v-btn>
-        </v-form> -->
+        </v-form>
       </div>
     </v-card>
   </v-dialog>
@@ -103,6 +103,29 @@
 <script>
 import {mapActions, mapGetters} from 'vuex'
   export default {
+    props: {
+      title: {
+        type: String,
+        default: ''
+      },
+      description: {
+        type: String,
+        default: ''
+      },
+      date: {
+        type: String,
+        default: new Date().toISOString().substr(0, 10)
+      },
+      id: {
+        type: String,
+        default: null
+      },
+      status: {
+        type: String,
+        default: 'new'
+      }
+    },
+
     data () {
       return {
         dialog: false,
@@ -110,21 +133,20 @@ import {mapActions, mapGetters} from 'vuex'
         sound: true,
         widgets: false,
         valid: true,
-        title: '',
         titleRules: [
           v => !!v || 'Name is required',
         ],
-        description: '',
-        date: new Date().toISOString().substr(0, 10),
-        dateFormatted: this.formatDate(new Date().toISOString().substr(0, 10)),
+        dateFormatted: this.formatDate(this.date),
         menu1: false,
       }
     },
+
     watch: {
       date () {
         this.dateFormatted = this.formatDate(this.date)
       },
     },
+
     methods: {
       ...mapActions(['createTask']),
       submitCreateTask() {
@@ -159,6 +181,7 @@ import {mapActions, mapGetters} from 'vuex'
         return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
       },
     },
+
     computed: {
       ...mapGetters(['userInfo']),
     }
