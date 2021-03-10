@@ -1,32 +1,29 @@
 <template>
-  <v-simple-table>
-    <template v-slot:default>
-      <thead>
-      <tr>
-        <th class="text-left" v-for="(title, index) in taskTableHeads" :key="index">
-          {{ title }}
-        </th>
-      </tr>
-      </thead>
-      <tbody>
-      <router-link
-          v-for="task in tasks"
-          :key="task.id"
-          :class="'task task_' + task.status"
-          :to="'/tasks/' + task.id"
-          tag="tr"
-      >
-        <td>{{ task.title }}</td>
-        <td>{{ task.date }}</td>
-        <td>{{ task.deadline }}</td>
-        <td>{{ task.status }}</td>
-      </router-link>
-      </tbody>
-    </template>
-  </v-simple-table>
+  <div>
+    <v-text-field
+      v-model="search"
+      append-icon="mdi-magnify"
+      label="Search"
+      single-line
+      hide-details
+      class="mb-3"
+    ></v-text-field>
+
+    <v-data-table
+      :headers="taskTableHeads"
+      :items="tasks"
+      :search="search"
+      :item-class="itemClass"
+      :items-per-page="-1"
+      :hide-default-footer="true"
+      @click:row="goToDetailTask"
+    ></v-data-table>
+  </div>
 </template>
 
 <script>
+import router from "@/js/router";
+
 export default {
   props: {
     tasks: {
@@ -36,7 +33,35 @@ export default {
   },
   data() {
     return {
-      taskTableHeads: ['Title', 'Date', 'Deadline', 'Status']
+      search: '',
+      taskTableHeads: [
+        {
+          text: 'Title',
+          value: 'title'
+        },
+        {
+          text: 'Date',
+          value: 'date'
+        },
+        {
+          text: 'Deadline',
+          value: 'deadline'
+        },
+        {
+          text: 'Status',
+          value: 'status'
+        }
+      ]
+    }
+  },
+
+  methods: {
+    goToDetailTask(task) {
+      router.push("/tasks/" + task.id)
+    },
+
+    itemClass(item) {
+      return `task task_${item.status}`
     }
   }
 }
