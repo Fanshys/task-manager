@@ -72,7 +72,9 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex"
+import {parseDate, formatDate} from "@/js/helpers/dateFormats"
+
 export default {
   data() {
     return {
@@ -121,18 +123,8 @@ export default {
       this.description = "";
       this.date = new Date().toISOString().substr(0, 10);
     },
-    formatDate(date) {
-      if (!date) return null;
-
-      const [year, month, day] = date.split("-");
-      return `${day}.${month}.${year}`;
-    },
-    parseDate(date) {
-      if (!date) return null;
-
-      const [day, month, year] = date.split(".");
-      return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
-    },
+    formatDate,
+    parseDate
   },
   computed: {
     ...mapGetters(["userInfo"]),

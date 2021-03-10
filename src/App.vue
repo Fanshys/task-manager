@@ -5,7 +5,7 @@
 <script>
 import MainLayout from './layouts/MainLayout'
 import EmptyLayout from './layouts/EmptyLayout'
-import firebase from '@/firebase'
+import firebase from '@/js/firebase'
 import {mapMutations, mapActions} from 'vuex'
 
 export default {

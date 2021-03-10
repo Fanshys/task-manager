@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Home from '../../views/Home.vue'
 
 Vue.use(VueRouter)
 
@@ -13,17 +13,17 @@ const routes = [
   {
     path: '/tasks',
     name: 'Tasks',
-    component: () => import('../views/Tasks.vue')
+    component: () => import('../../views/Tasks.vue')
   },
   {
     path: '/tasks/:id',
     name: 'Task',
-    component: () => import('../views/Task.vue')
+    component: () => import('../../views/Task.vue')
   },
   {
     path: '/login',
     name: 'Login',
-    component: () => import('../views/Login.vue'),
+    component: () => import('../../views/Login.vue'),
     meta: {
       layout: 'empty'
     }
@@ -31,7 +31,7 @@ const routes = [
   {
     path: '/register',
     name: 'Register',
-    component: () => import('../views/Register.vue'),
+    component: () => import('../../views/Register.vue'),
     meta: {
       layout: 'empty'
     }

@@ -1,5 +1,5 @@
-import router from '@/router'
-import firebase from '@/firebase'
+import router from '@/js/router'
+import firebase from '@/js/firebase'
 
 export default {
 	async loginUser({commit}, data) {

@@ -9,10 +9,10 @@
         <add-user :id="task.id" />
 
         <edit-task
-          :title="task.title"
-          :description="task.description"
-          :date="task.date"
-          :status="task.status"
+          :task-title="task.title"
+          :task-description="task.description"
+          :task-date="parseDate(task.date)"
+          :task-status="task.status"
           :id="task.id"
         />
       </div>
@@ -29,6 +29,7 @@
 <script>
 import EditTask from '@/components/EditTask'
 import AddUser from "@/components/AddUser"
+import {parseDate} from "@/js/helpers/dateFormats"
 
 export default {
   data() {
@@ -41,6 +42,10 @@ export default {
     task() {
       return this.$store.getters.taskById(this.id)
     },
+  },
+
+  methods: {
+    parseDate
   },
 
   components: {

@@ -46,6 +46,11 @@
           lazy-validation
           @submit.prevent="submitCreateTask"
         >
+          <v-select
+            :items="statuses"
+            label="Status"
+          ></v-select>
+
           <v-text-field
             v-model="title"
             :rules="titleRules"
@@ -75,6 +80,7 @@
               v-model="date"
               no-title
               @input="menu1 = false"
+              :show-current="date"
             ></v-date-picker>
           </v-menu>
 
@@ -102,17 +108,19 @@
 
 <script>
 import {mapActions, mapGetters} from 'vuex'
-  export default {
+import {parseDate, formatDate} from "@/js/helpers/dateFormats"
+
+export default {
     props: {
-      title: {
+      taskTitle: {
         type: String,
         default: ''
       },
-      description: {
+      taskDescription: {
         type: String,
         default: ''
       },
-      date: {
+      taskDate: {
         type: String,
         default: new Date().toISOString().substr(0, 10)
       },
@@ -120,7 +128,7 @@ import {mapActions, mapGetters} from 'vuex'
         type: String,
         default: null
       },
-      status: {
+      taskStatus: {
         type: String,
         default: 'new'
       }
@@ -128,27 +136,30 @@ import {mapActions, mapGetters} from 'vuex'
 
     data () {
       return {
+        title: this.taskTitle,
+        description: this.taskDescription,
+        date: this.taskDate,
+        status: this.taskStatus,
         dialog: false,
-        notifications: false,
-        sound: true,
-        widgets: false,
         valid: true,
         titleRules: [
           v => !!v || 'Name is required',
         ],
-        dateFormatted: this.formatDate(this.date),
+        dateFormatted: this.formatDate(this.taskDate),
         menu1: false,
+        statuses: ['new', 'completed', 'closed']
       }
     },
 
     watch: {
       date () {
         this.dateFormatted = this.formatDate(this.date)
-      },
+      }
     },
 
     methods: {
       ...mapActions(['createTask']),
+
       submitCreateTask() {
         this.dialog = false
         this.createTask({
@@ -165,21 +176,12 @@ import {mapActions, mapGetters} from 'vuex'
             this.date = new Date().toISOString().substr(0, 10)
           })
       },
+
       validate () {
         this.$refs.form.validate()
       },
-      formatDate (date) {
-        if (!date) return null
-
-        const [year, month, day] = date.split('-')
-        return `${day}.${month}.${year}`
-      },
-      parseDate (date) {
-        if (!date) return null
-
-        const [day, month, year] = date.split('.')
-        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
-      },
+      formatDate,
+      parseDate
     },
 
     computed: {
