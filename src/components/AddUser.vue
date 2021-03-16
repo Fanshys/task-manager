@@ -6,7 +6,6 @@
     >
       <template v-slot:activator="{ on, attrs }">
         <v-btn
-            class="mr-2"
             v-bind="attrs"
             v-on="on"
         >

@@ -6,7 +6,7 @@
 
         <v-spacer />
 
-        <add-user :id="task.id" />
+        <add-user :id="task.id" class="mr-2"/>
 
         <edit-task
           :task-title="task.title"
@@ -15,6 +15,11 @@
           :task-status="task.status"
           :id="task.id"
         />
+
+        <v-btn class="ml-2" @click="deleteTask({
+          id,
+          owner: task.owner
+        })">Delete task</v-btn>
       </div>
 
       <div>{{task.description}}</div>
@@ -30,6 +35,7 @@
 import EditTask from '@/components/EditTask'
 import AddUser from "@/components/AddUser"
 import {parseDate} from "@/js/helpers/dateFormats"
+import {mapActions} from 'vuex'
 
 export default {
   data() {
@@ -41,11 +47,12 @@ export default {
   computed: {
     task() {
       return this.$store.getters.taskById(this.id)
-    },
+    }
   },
 
   methods: {
-    parseDate
+    parseDate,
+    ...mapActions(['deleteTask'])
   },
 
   components: {

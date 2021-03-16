@@ -1,4 +1,5 @@
 import firebase from '@/js/firebase'
+import router from "@/js/router";
 
 export default {
 	async createTask({ commit }, data) {
@@ -19,6 +20,7 @@ export default {
 			console.log(error.message)
 		}
 	},
+
 	async fetchTasks({ commit }, taskIds) {
 		const taskPromises = taskIds.map(id => {
 			return firebase.database().ref(`tasks/${id}`).once('value')
@@ -31,5 +33,12 @@ export default {
 			}
 		})
 		commit('updateTasks', tasks)
+	},
+
+	async deleteTask({commit}, data) {
+		await firebase.database().ref(`tasks/${data.id}`).remove()
+		await firebase.database().ref(`users/${data.owner}/tasks/${data.id}`).remove()
+		commit('deleteTaskLocal', data.id)
+		router.push('/tasks/')
 	}
 }
